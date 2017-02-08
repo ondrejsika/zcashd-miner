@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import struct
 import time
 import argparse
@@ -62,7 +64,11 @@ def submit_block(template, header_with_solution_bin):
         ''.join(txs),
     ))
     block_hex = bin_to_hex(block_bin)
-    server.submitblock(block_hex)
+    result = server.submitblock(block_hex)
+    if not result:
+        print('OK')
+    else:
+        print('ERR %s' % result)
 
 
 def mine(template):
