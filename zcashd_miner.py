@@ -5,7 +5,8 @@ import argparse
 from jsonrpc_requests import Server
 
 from pyzceqsolver.solver import Solver
-from utils import hex_to_bin, bin_to_hex, double_sha256_digest, sha256_digest_to_int
+from utils import hex_to_bin, bin_to_hex, double_sha256_digest, sha256_digest_to_int, pack_varint
+from merkletree import MerkleTree
 
 
 parser = argparse.ArgumentParser()
@@ -24,17 +25,27 @@ def get_block_template():
     return server.getblocktemplate()
 
 
+def txs_hashes(txs):
+    return map(double_sha256_digest, txs)
+
+
+def get_txs(t):
+    return [hex_to_bin(tx['data']) for tx in t['transactions']]
+
+
 def get_header_from_templete(t, nonce):
     version = t['version']
     previous_block_hash = hex_to_bin(t['previousblockhash'])
-    hash_merkle_root = hex_to_bin(t['coinbasetxn']['hash'])
+    cb_hash = hex_to_bin(t['coinbasetxn']['hash'])[::-1]
+    hashes = [cb_hash, ] + txs_hashes(get_txs(t))
+    hash_merkle_root = MerkleTree(hashes).tree_digest()
     time = t['curtime']
     bits = t['bits']
 
     return ''.join((
         struct.pack("<i", version),
         previous_block_hash[::-1],
-        hash_merkle_root[::-1],
+        hash_merkle_root,
         '\x00' * 32,
         struct.pack("<I", time),
         hex_to_bin(bits)[::-1],
@@ -43,10 +54,12 @@ def get_header_from_templete(t, nonce):
 
 
 def submit_block(template, header_with_solution_bin):
+    txs = get_txs(template)
     block_bin = ''.join((
         header_with_solution_bin,
-        '\x01',
+        pack_varint(len(txs) + 1),
         hex_to_bin(template['coinbasetxn']['data']),
+        ''.join(txs),
     ))
     block_hex = bin_to_hex(block_bin)
     server.submitblock(block_hex)

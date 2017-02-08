@@ -1,5 +1,6 @@
 import binascii
 import hashlib
+import struct
 
 
 def hex_to_bin(data_hex):
@@ -22,3 +23,20 @@ def bin_le_to_int(val):
 def sha256_digest_to_int(val):
     return bin_le_to_int(val)
 
+
+def pack_varint(i):
+    r = ''
+    if i < 0:
+        raise ValueError('varint must be non-negative integer')
+    elif i < 0xfd:
+        r += chr(i)
+    elif i <= 0xffff:
+        r += chr(0xfd)
+        r += struct.pack(b'<H', i)
+    elif i <= 0xffffffff:
+        r += chr(0xfe)
+        r += struct.pack(b'<I', i)
+    else:
+        r += chr(0xff)
+        r += struct.pack(b'<Q', i)
+    return r
