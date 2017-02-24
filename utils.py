@@ -40,3 +40,12 @@ def pack_varint(i):
         r += chr(0xff)
         r += struct.pack(b'<Q', i)
     return r
+
+
+def replace_output(a, b):
+    """
+    Replace output of coinbase transaction A with outputs of transaction B
+    """
+    prefix = a[:41+1+ord(a[41])]
+    suffix = b[5:]
+    return prefix + '\xff\xff\xff\xff' + suffix
