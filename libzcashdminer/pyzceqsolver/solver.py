@@ -1,7 +1,7 @@
 from cffi import FFI
 import pkg_resources
 import platform
-import pyzceqsolver
+from . import get_library_filename
 
 ffi = None
 library = None
@@ -45,7 +45,7 @@ def load_library():
     ffi = FFI()
     ffi.cdef(library_header)
     try:
-        library_filename = pyzceqsolver.get_library_filename(platform.system())
+        library_filename = get_library_filename(platform.system())
     except Exception as e:
         log.error('Failed to get library filename: {}'.format(e))
     else:

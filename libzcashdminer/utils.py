@@ -49,3 +49,11 @@ def replace_output(a, b):
     prefix = a[:41+1+ord(a[41])]
     suffix = b[5:]
     return prefix + '\xff\xff\xff\xff' + suffix
+
+
+def txs_hashes(txs):
+    return map(double_sha256_digest, txs)
+
+
+def get_txs_from_template(template):
+    return [hex_to_bin(tx['data']) for tx in template['transactions']]
