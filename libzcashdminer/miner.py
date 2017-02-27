@@ -65,7 +65,7 @@ class ZcashdMiner(object):
         ))
         block_hex = bin_to_hex(block_bin)
         result = self.server.submitblock(block_hex)
-        return result
+        return bin_to_hex(double_sha256_digest(header_with_solution_bin)[::-1]), result
 
     def mine_block(self, mining_address=None):
         template = self.server.getblocktemplate()
@@ -84,8 +84,7 @@ class ZcashdMiner(object):
                 hash_bin = double_sha256_digest(header_with_solution_bin)
                 hash_int = sha256_digest_to_int(hash_bin)
                 if hash_int < target:
-                    self.submit_block(template, cb_tx, header_with_solution_bin)
-                    return
+                    return self.submit_block(template, cb_tx, header_with_solution_bin)
 
     def mine_n_blocks(self, n, mining_address=None):
         for _ in range(n):

@@ -15,8 +15,8 @@ parser.add_argument('-a', '--address', default=None, help='Mining address')
 args = parser.parse_args()
 
 miner = ZcashdMiner(args.zcashd_url)
-for result in miner.mine_n_blocks(args.block_count, args.address):
+for hash, result in miner.mine_n_blocks(args.block_count, args.address):
     if not result:
-        print('OK')
+        print('%s OK' % hash)
     else:
-        print('ERR %s' % result)
+        print('%s ERR %s' % (hash, result))
