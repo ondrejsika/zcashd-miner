@@ -36,6 +36,7 @@ class ZcashdMiner(object):
     def get_header_from_templete(t, cb_tx, nonce):
         version = t['version']
         previous_block_hash = hex_to_bin(t['previousblockhash'])
+        final_sapling_root_hash = hex_to_bin(t['finalsaplingroothash'])
 
         cb_hash = double_sha256_digest(cb_tx)
         hashes = [cb_hash, ] + txs_hashes(get_txs_from_template(t))
@@ -47,7 +48,7 @@ class ZcashdMiner(object):
             struct.pack("<i", version),
             previous_block_hash[::-1],
             hash_merkle_root,
-            '\x00' * 32,
+            final_sapling_root_hash[::-1],
             struct.pack("<I", time),
             hex_to_bin(bits)[::-1],
             nonce,

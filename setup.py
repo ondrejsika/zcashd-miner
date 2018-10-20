@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zcashd-miner',
-    version='1.0.1',
+    version='1.1.0',
     url='https://github.com/ondrejsika/zcashd-miner',
     license='MIT',
     description='CPU miner for Zcash',
