@@ -37,8 +37,7 @@ class ZcashdMiner(object):
         version = t['version']
         previous_block_hash = hex_to_bin(t['previousblockhash'])
 
-        cb_hash = double_sha256_digest(cb_tx)#[::-1]
-        # cb_hash = hex_to_bin(t['coinbasetxn']['hash'])[::-1]
+        cb_hash = double_sha256_digest(cb_tx)
         hashes = [cb_hash, ] + txs_hashes(get_txs_from_template(t))
         hash_merkle_root = MerkleTree(hashes).tree_digest()
         time = t['curtime']
@@ -59,7 +58,6 @@ class ZcashdMiner(object):
         block_bin = ''.join((
             header_with_solution_bin,
             pack_varint(len(txs) + 1),
-            # hex_to_bin(template['coinbasetxn']['data']),
             cb_tx,
             ''.join(txs),
         ))
