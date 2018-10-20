@@ -3,5 +3,6 @@
 *.egg-info
 
 .idea
+.vscode
 *.swp
 
