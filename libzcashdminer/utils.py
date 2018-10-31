@@ -46,8 +46,8 @@ def replace_output(a, b):
     """
     Replace output of coinbase transaction A with outputs of transaction B
     """
-    prefix = a[:41+1+ord(a[41])]
-    suffix = b[5:]
+    prefix = a[:45+1+ord(a[45])]
+    suffix = b[9:]
     return prefix + '\xff\xff\xff\xff' + suffix
 
 
