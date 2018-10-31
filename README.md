@@ -1,7 +1,7 @@
 # Zcash Miner
 
-- author: Ondrej Sika <ondrej@ondrejsika.com>
-- licnse: MIT <https://ondrejsika.com/ondrejsika/mit.txt>
+    Ondrej Sika <ondrej@ondrejsika.com>
+    https://github.com/ondrejsika/zcashd-miner
 
 ## Installation
 
@@ -22,4 +22,24 @@ Example of usage
 
 ```
 zcashd-miner.py http://zu:zp@ram5.bo:28232 1
+```
+
+## Docker
+
+### Build Image
+
+```
+docker build -t ondrejsika/zcashd-miner .
+```
+
+### Run from Docker
+
+```
+docker run ondrejsika/zcashd-miner --help
+```
+
+Example of usage
+
+```
+docker run ondrejsika/zcashd-miner http://zu:zp@ram5.bo:28232 1
 ```
