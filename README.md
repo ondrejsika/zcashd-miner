@@ -21,7 +21,7 @@ zcashd-miner.py --help
 Example of usage
 
 ```
-zcashd-miner.py http://zu:zp@ram5.bo:28232 1
+zcashd-miner.py http://zu:zp@localhost:28232 1
 ```
 
 ## Docker
@@ -41,5 +41,5 @@ docker run ondrejsika/zcashd-miner --help
 Example of usage
 
 ```
-docker run ondrejsika/zcashd-miner http://zu:zp@ram5.bo:28232 1
+docker run ondrejsika/zcashd-miner http://zu:zp@localhost:28232 1
 ```
